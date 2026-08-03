@@ -1,49 +1,32 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# Rust build output
+target
 
-# compiled output
+# Node / pnpm
+node_modules
 dist
 tmp
 out-tsc
 *.tsbuildinfo
+
+# Expo
 .expo
 .expo-shared
 
-# dependencies
-node_modules
-
-# IDEs and editors
+# IDEs
+.vscode
 /.idea
 .project
 .classpath
-.c9/
-*.launch
-.settings/
 *.sublime-workspace
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
+# System
 .DS_Store
 Thumbs.db
 
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-
-# Replit
+# Replit internal
 .cache/
 .local/
+
+# Logs
+npm-debug.log
+yarn-error.log
