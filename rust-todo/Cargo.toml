@@ -1,0 +1,7 @@
+[package]
+name = "rust-todo"
+version = "0.1.0"
+edition = "2021"
+
+# Tidak ada dependencies eksternal — project ini hanya menggunakan
+# Rust standard library, yang sudah termasuk saat kamu install Rust.
