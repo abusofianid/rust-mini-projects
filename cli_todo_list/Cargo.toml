@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2021"
 license = "GPL-3.0-only"
 
-# Tidak ada dependencies eksternal — project ini hanya menggunakan
-# Rust standard library, yang sudah termasuk saat kamu install Rust.
+# No external dependencies — this project only uses the Rust
+# standard library, which is included when you install Rust.
