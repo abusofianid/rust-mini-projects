@@ -59,7 +59,7 @@ cargo check
 
 ## How to Use
 
-After `cargo run`, you will see a menu like this (the program's messages are in Indonesian):
+After `cargo run`, you will see a menu like this:
 
 ```
 ==============================
@@ -75,10 +75,8 @@ After `cargo run`, you will see a menu like this (the program's messages are in 
  4. Delete Task
  5. Exit
 ------------------------------
-Pilih menu (1-5):
+Choose a menu option (1-5):
 ```
-
-`Pilih menu (1-5)` means "Choose a menu option (1-5)".
 
 **Example flow:**
 
@@ -220,8 +218,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_task_baru_berstatus_pending() {
-        let task = Task::new(1, "Belajar Rust".to_string());
+    fn test_new_task_is_pending() {
+        let task = Task::new(1, "Learn Rust".to_string());
         assert!(matches!(task.status, TaskStatus::Pending));
     }
 }

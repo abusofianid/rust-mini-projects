@@ -1,29 +1,29 @@
 // ============================================================
-// rust-todo: Aplikasi CLI Todo List untuk Belajar Rust
+// rust-todo: A CLI Todo List app for learning Rust
 // ============================================================
 //
-// Konsep Rust yang dipelajari di file ini:
-//   - struct      : mendefinisikan tipe data kustom
-//   - enum        : tipe yang memiliki beberapa kemungkinan nilai
-//   - Vec<T>      : array dinamis (growable list)
-//   - match       : pencocokan pola (pattern matching)
-//   - impl        : menambahkan method ke struct / enum
+// Rust concepts covered in this file:
+//   - struct      : define a custom data type
+//   - enum        : a type with several possible values
+//   - Vec<T>      : dynamic array (growable list)
+//   - match       : pattern matching
+//   - impl        : add methods to a struct / enum
 //   - ownership   : String vs &str
-//   - Result / unwrap_or : penanganan error ringan
-//   - format!     : memformat teks seperti printf
-//   - fn          : mendefinisikan fungsi
+//   - Result / unwrap_or : lightweight error handling
+//   - format!     : format text like printf
+//   - fn          : define functions
 // ============================================================
 
 use std::io::{self, Write};
 
 // ----------------------------------------------------------
-// ENUM: Status sebuah task.
+// ENUM: The status of a task.
 //
-// `enum` di Rust mendefinisikan tipe yang hanya bisa bernilai
-// salah satu dari varian yang terdaftar.
+// An `enum` in Rust defines a type that can only be one of
+// its listed variants.
 //
-// `#[derive(Debug)]` membuat Rust otomatis bisa mencetak
-// nilai enum ini untuk keperluan debugging.
+// `#[derive(Debug)]` lets Rust automatically print the value
+// of this enum for debugging purposes.
 // ----------------------------------------------------------
 #[derive(Debug)]
 enum TaskStatus {
@@ -31,12 +31,12 @@ enum TaskStatus {
     Completed,
 }
 
-// Tambahkan method ke TaskStatus agar bisa ditampilkan sebagai teks.
+// Add a method to TaskStatus so it can be shown as text.
 impl TaskStatus {
-    /// Mengembalikan label teks yang mudah dibaca.
+    /// Returns an easy-to-read text label.
     fn label(&self) -> &str {
-        // `match` memastikan semua varian ditangani — compiler akan
-        // memberi error jika ada varian yang terlewat.
+        // `match` makes sure every variant is handled — the compiler
+        // gives an error if a variant is missed.
         match self {
             TaskStatus::Pending => "[ ]",
             TaskStatus::Completed => "[x]",
@@ -45,20 +45,20 @@ impl TaskStatus {
 }
 
 // ----------------------------------------------------------
-// STRUCT: Representasi sebuah task.
+// STRUCT: The representation of a task.
 //
-// `struct` mengelompokkan beberapa field terkait menjadi
-// satu tipe data baru — mirip class tanpa inheritance.
+// A `struct` groups several related fields into a single
+// new data type — like a class without inheritance.
 // ----------------------------------------------------------
 struct Task {
-    id: u32,       // ID unik, bertipe u32 (unsigned 32-bit integer)
-    title: String, // Judul task — String adalah teks yang dimiliki (owned)
+    id: u32,       // Unique ID, of type u32 (unsigned 32-bit integer)
+    title: String, // Task title — String is owned text
     status: TaskStatus,
 }
 
-// Tambahkan method ke Task agar bisa mencetak baris ringkasan.
+// Add methods to Task so it can print a summary line.
 impl Task {
-    /// Membuat Task baru dengan status Pending secara default.
+    /// Creates a new Task with the Pending status by default.
     fn new(id: u32, title: String) -> Task {
         Task {
             id,
@@ -67,9 +67,9 @@ impl Task {
         }
     }
 
-    /// Menampilkan satu baris ringkasan task.
+    /// Prints a one-line summary of the task.
     fn display(&self) {
-        // `&self` artinya method meminjam Task tanpa mengambil ownership-nya.
+        // `&self` means the method borrows the Task without taking ownership of it.
         println!(
             "  {}  [ID: {:>3}]  {}",
             self.status.label(),
@@ -80,44 +80,44 @@ impl Task {
 }
 
 // ----------------------------------------------------------
-// FUNGSI UTAMA: main() — titik masuk program Rust
+// MAIN FUNCTION: main() — the entry point of a Rust program
 // ----------------------------------------------------------
 fn main() {
-    // `Vec<Task>` adalah list task yang bisa tumbuh secara dinamis.
+    // `Vec<Task>` is a list of tasks that can grow dynamically.
     let mut tasks: Vec<Task> = Vec::new();
 
-    // Counter untuk ID task berikutnya.
+    // Counter for the next task ID.
     let mut next_id: u32 = 1;
 
     println!("==============================");
     println!("   Rust Todo List  🦀");
     println!("==============================");
 
-    // Loop utama program — terus berjalan sampai pengguna memilih Exit.
+    // Main program loop — keeps running until the user chooses Exit.
     loop {
         print_menu();
 
-        let choice = read_input("Pilih menu (1-5): ");
+        let choice = read_input("Choose a menu option (1-5): ");
 
-        // `match` di sini menangani setiap pilihan menu.
-        // `trim()` menghapus spasi/newline di awal & akhir input.
+        // `match` here handles each menu choice.
+        // `trim()` removes spaces/newlines at the start & end of the input.
         match choice.trim() {
             "1" => add_task(&mut tasks, &mut next_id),
             "2" => list_tasks(&tasks),
             "3" => complete_task(&mut tasks),
             "4" => delete_task(&mut tasks),
             "5" => {
-                println!("\nSampai jumpa! 👋");
-                break; // Keluar dari loop
+                println!("\nGoodbye! 👋");
+                break; // Exit the loop
             }
-            // `_` adalah wildcard — menangkap semua nilai lain.
-            _ => println!("\n⚠️  Pilihan tidak valid. Masukkan angka 1-5.\n"),
+            // `_` is a wildcard — it catches every other value.
+            _ => println!("\n⚠️  Invalid choice. Enter a number from 1 to 5.\n"),
         }
     }
 }
 
 // ----------------------------------------------------------
-// Mencetak menu pilihan ke layar.
+// Prints the menu options to the screen.
 // ----------------------------------------------------------
 fn print_menu() {
     println!("\n------------------------------");
@@ -132,64 +132,64 @@ fn print_menu() {
 }
 
 // ----------------------------------------------------------
-// Membaca satu baris input dari pengguna.
+// Reads one line of input from the user.
 //
-// Parameter `prompt: &str` memakai referensi (&) ke string —
-// bukan menyalin atau memiliki string tersebut.
-// Fungsi mengembalikan String (owned).
+// The parameter `prompt: &str` uses a reference (&) to a string —
+// it neither copies nor owns that string.
+// The function returns a String (owned).
 // ----------------------------------------------------------
 fn read_input(prompt: &str) -> String {
-    // Cetak prompt tanpa newline agar kursor tetap di baris yang sama.
+    // Print the prompt without a newline so the cursor stays on the same line.
     print!("{}", prompt);
 
-    // `flush()` memastikan teks prompt benar-benar tampil sebelum input.
+    // `flush()` makes sure the prompt text is actually shown before reading input.
     io::stdout().flush().unwrap_or(());
 
     let mut input = String::new();
 
-    // `io::stdin().read_line()` membaca baris dari keyboard.
-    // Jika gagal (misal pipe tertutup), kembalikan string kosong.
+    // `io::stdin().read_line()` reads a line from the keyboard.
+    // If it fails (e.g. a closed pipe), return an empty string.
     io::stdin().read_line(&mut input).unwrap_or(0);
 
     input
 }
 
 // ----------------------------------------------------------
-// Menambahkan task baru ke daftar.
+// Adds a new task to the list.
 //
-// `tasks: &mut Vec<Task>` — meminjam Vec secara mutable
-//   agar kita bisa menambah elemen.
-// `next_id: &mut u32` — meminjam counter agar bisa diubah.
+// `tasks: &mut Vec<Task>` — borrows the Vec mutably
+//   so we can add elements.
+// `next_id: &mut u32` — borrows the counter so it can be changed.
 // ----------------------------------------------------------
 fn add_task(tasks: &mut Vec<Task>, next_id: &mut u32) {
-    let input = read_input("\nJudul task baru: ");
+    let input = read_input("\nNew task title: ");
     let title = input.trim();
 
-    // Validasi: judul tidak boleh kosong.
+    // Validation: the title must not be empty.
     if title.is_empty() {
-        println!("⚠️  Judul task tidak boleh kosong.");
-        return; // Keluar dari fungsi lebih awal
+        println!("⚠️  The task title cannot be empty.");
+        return; // Exit the function early
     }
 
-    // `to_string()` mengubah &str menjadi String (owned copy).
+    // `to_string()` turns a &str into a String (owned copy).
     let task = Task::new(*next_id, title.to_string());
 
-    println!("✅  Task '{}' ditambahkan (ID: {}).", task.title, task.id);
+    println!("✅  Task '{}' added (ID: {}).", task.title, task.id);
 
-    tasks.push(task); // Tambahkan ke Vec
-    *next_id += 1; // `*` untuk menulis ke nilai di balik referensi (dereference)
+    tasks.push(task); // Add it to the Vec
+    *next_id += 1; // `*` writes to the value behind the reference (dereference)
 }
 
 // ----------------------------------------------------------
-// Menampilkan semua task yang ada.
+// Shows all existing tasks.
 //
-// `tasks: &Vec<Task>` — meminjam Vec secara read-only (immutable).
+// `tasks: &Vec<Task>` — borrows the Vec read-only (immutable).
 // ----------------------------------------------------------
 fn list_tasks(tasks: &Vec<Task>) {
     println!();
 
     if tasks.is_empty() {
-        println!("📋  Belum ada task. Tambahkan dengan pilih menu 1.");
+        println!("📋  No tasks yet. Add one by choosing option 1.");
         return;
     }
 
@@ -199,10 +199,10 @@ fn list_tasks(tasks: &Vec<Task>) {
         .filter(|t| matches!(t.status, TaskStatus::Completed))
         .count();
 
-    println!("📋  Daftar Task ({}/{} selesai):", done, total);
+    println!("📋  Task List ({}/{} done):", done, total);
     println!("  --------------------------------");
 
-    // `for` loop mengiterasi setiap &Task di Vec (referensi, bukan copy).
+    // The `for` loop iterates over each &Task in the Vec (a reference, not a copy).
     for task in tasks {
         task.display();
     }
@@ -211,106 +211,106 @@ fn list_tasks(tasks: &Vec<Task>) {
 }
 
 // ----------------------------------------------------------
-// Menandai sebuah task sebagai Completed.
+// Marks a task as Completed.
 // ----------------------------------------------------------
 fn complete_task(tasks: &mut Vec<Task>) {
     if tasks.is_empty() {
-        println!("\n⚠️  Belum ada task.");
+        println!("\n⚠️  No tasks yet.");
         return;
     }
 
     list_tasks(tasks);
 
-    let input = read_input("Masukkan ID task yang ingin diselesaikan: ");
+    let input = read_input("Enter the ID of the task to complete: ");
 
-    // `parse::<u32>()` mengubah String ke angka u32.
-    // Hasilnya adalah Result<u32, _>; kita tangani error dengan pesan jelas.
+    // `parse::<u32>()` turns a String into a u32 number.
+    // The result is a Result<u32, _>; we handle the error with a clear message.
     let id: u32 = match input.trim().parse() {
         Ok(n) => n,
         Err(_) => {
-            println!("⚠️  ID tidak valid. Masukkan angka.");
+            println!("⚠️  Invalid ID. Enter a number.");
             return;
         }
     };
 
-    // `iter_mut()` memberikan referensi mutable ke setiap elemen.
+    // `iter_mut()` gives a mutable reference to each element.
     for task in tasks.iter_mut() {
         if task.id == id {
             match task.status {
                 TaskStatus::Completed => {
-                    println!("ℹ️  Task '{}' sudah selesai sebelumnya.", task.title);
+                    println!("ℹ️  Task '{}' is already completed.", task.title);
                 }
                 TaskStatus::Pending => {
                     task.status = TaskStatus::Completed;
-                    println!("✅  Task '{}' ditandai selesai!", task.title);
+                    println!("✅  Task '{}' marked as completed!", task.title);
                 }
             }
             return;
         }
     }
 
-    println!("⚠️  Task dengan ID {} tidak ditemukan.", id);
+    println!("⚠️  Task with ID {} not found.", id);
 }
 
 // ----------------------------------------------------------
-// Menghapus sebuah task dari daftar.
+// Removes a task from the list.
 // ----------------------------------------------------------
 fn delete_task(tasks: &mut Vec<Task>) {
     if tasks.is_empty() {
-        println!("\n⚠️  Belum ada task untuk dihapus.");
+        println!("\n⚠️  No tasks to delete.");
         return;
     }
 
     list_tasks(tasks);
 
-    let input = read_input("Masukkan ID task yang ingin dihapus: ");
+    let input = read_input("Enter the ID of the task to delete: ");
 
     let id: u32 = match input.trim().parse() {
         Ok(n) => n,
         Err(_) => {
-            println!("⚠️  ID tidak valid. Masukkan angka.");
+            println!("⚠️  Invalid ID. Enter a number.");
             return;
         }
     };
 
-    // `position()` mencari indeks elemen pertama yang cocok dengan kondisi.
-    // Hasilnya Option<usize>: Some(index) jika ditemukan, None jika tidak.
+    // `position()` finds the index of the first element matching the condition.
+    // The result is an Option<usize>: Some(index) if found, None if not.
     let pos = tasks.iter().position(|t| t.id == id);
 
     match pos {
         Some(index) => {
-            // `remove(index)` menghapus elemen pada indeks tersebut
-            // dan mengembalikan nilai yang dihapus (owned).
+            // `remove(index)` removes the element at that index
+            // and returns the removed value (owned).
             let removed = tasks.remove(index);
-            println!("🗑️  Task '{}' berhasil dihapus.", removed.title);
+            println!("🗑️  Task '{}' deleted successfully.", removed.title);
         }
         None => {
-            println!("⚠️  Task dengan ID {} tidak ditemukan.", id);
+            println!("⚠️  Task with ID {} not found.", id);
         }
     }
 }
 
 // ----------------------------------------------------------
-// TES OTOMATIS
+// AUTOMATED TESTS
 //
-// Rust punya sistem testing bawaan.
-// Jalankan dengan: cargo test
+// Rust has a built-in testing system.
+// Run it with: cargo test
 //
-// Blok `#[cfg(test)]` hanya dikompilasi saat `cargo test`.
+// The `#[cfg(test)]` block is only compiled during `cargo test`.
 // ----------------------------------------------------------
 #[cfg(test)]
 mod tests {
-    // `super::*` mengimpor semua item dari modul parent (file ini).
+    // `super::*` imports every item from the parent module (this file).
     use super::*;
 
     #[test]
-    fn test_task_baru_berstatus_pending() {
-        let task = Task::new(1, "Belajar Rust".to_string());
+    fn test_new_task_is_pending() {
+        let task = Task::new(1, "Learn Rust".to_string());
 
-        // Memastikan status awal adalah Pending.
+        // Make sure the initial status is Pending.
         assert!(matches!(task.status, TaskStatus::Pending));
         assert_eq!(task.id, 1);
-        assert_eq!(task.title, "Belajar Rust");
+        assert_eq!(task.title, "Learn Rust");
     }
 
     #[test]
@@ -326,11 +326,11 @@ mod tests {
     }
 
     #[test]
-    fn test_tambah_task_ke_vec() {
+    fn test_add_task_to_vec() {
         let mut tasks: Vec<Task> = Vec::new();
         let mut next_id: u32 = 1;
 
-        // Simulasi add_task secara langsung (tanpa input keyboard).
+        // Simulate add_task directly (without keyboard input).
         tasks.push(Task::new(next_id, "Task A".to_string()));
         next_id += 1;
         tasks.push(Task::new(next_id, "Task B".to_string()));
@@ -341,23 +341,23 @@ mod tests {
     }
 
     #[test]
-    fn test_complete_task_mengubah_status() {
-        let mut tasks = vec![Task::new(1, "Baca buku".to_string())];
+    fn test_complete_task_changes_status() {
+        let mut tasks = vec![Task::new(1, "Read a book".to_string())];
 
-        // Ubah status task pertama menjadi Completed.
+        // Change the status of the first task to Completed.
         tasks[0].status = TaskStatus::Completed;
 
         assert!(matches!(tasks[0].status, TaskStatus::Completed));
     }
 
     #[test]
-    fn test_delete_task_mengurangi_jumlah() {
+    fn test_delete_task_reduces_count() {
         let mut tasks = vec![
-            Task::new(1, "Task satu".to_string()),
-            Task::new(2, "Task dua".to_string()),
+            Task::new(1, "Task one".to_string()),
+            Task::new(2, "Task two".to_string()),
         ];
 
-        // Hapus task dengan ID 1.
+        // Delete the task with ID 1.
         let pos = tasks.iter().position(|t| t.id == 1);
         if let Some(index) = pos {
             tasks.remove(index);
@@ -368,11 +368,11 @@ mod tests {
     }
 
     #[test]
-    fn test_delete_id_tidak_ada() {
-        let tasks = vec![Task::new(1, "Task satu".to_string())];
+    fn test_delete_nonexistent_id() {
+        let tasks = vec![Task::new(1, "Task one".to_string())];
 
-        let pos = tasks.iter().position(|t| t.id == 99); // ID tidak ada
-        assert!(pos.is_none()); // Tidak ditemukan = None
-        assert_eq!(tasks.len(), 1); // Vec tidak berubah
+        let pos = tasks.iter().position(|t| t.id == 99); // ID does not exist
+        assert!(pos.is_none()); // Not found = None
+        assert_eq!(tasks.len(), 1); // The Vec is unchanged
     }
 }
