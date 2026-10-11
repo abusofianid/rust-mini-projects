@@ -13,6 +13,7 @@
 |:-:| :--- | :--- | :--- |
 | 1 | **[CLI Calculator](./cli_calculator)** | A terminal calculator that performs basic arithmetic (`+`, `-`, `*`, `/`) with input validation. | `stdin/stdout`, `loop`, `match`, `Input Validation` |
 | 2 | **[CLI Todo List](./cli_todo_list)** | A terminal todo app to add, list, complete, and delete tasks. | `struct`, `enum`, `Vec`, `Ownership`, `Unit Tests` |
+| 3 | **[CLI Word Counter](./cli_word_counter)** | A terminal tool that counts lines, words, and characters in a file and shows the most frequent words. | `std::env`, `std::fs`, `HashMap`, `Result` / `?`, `Unit Tests` |
 
 > *Note: Click on the project name to navigate to the specific project folder.*
 

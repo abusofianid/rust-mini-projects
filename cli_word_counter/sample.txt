@@ -1,0 +1,6 @@
+Rust is a systems programming language focused on safety, speed, and concurrency.
+The compiler checks ownership rules at compile time, so many bugs never reach runtime.
+
+A word counter is a small project, but it teaches a lot: reading files, handling errors,
+and using a HashMap to count things. The best way to learn Rust is to build small tools,
+read the compiler messages, and try again.
