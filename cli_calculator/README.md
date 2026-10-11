@@ -1,48 +1,48 @@
-# 🦀 Rust CLI Calculator — Proyek Belajar Rust untuk Pemula
+# 🦀 Rust CLI Calculator — A Beginner-Friendly Rust Learning Project
 
-Proyek mini CLI sederhana untuk mempelajari dasar-dasar bahasa pemrograman Rust
-melalui aplikasi kalkulator yang berjalan di terminal.
+A simple CLI mini project for learning the fundamentals of the Rust programming
+language by building a calculator that runs in the terminal.
 
 ---
 
-## Fitur
+## Features
 
-| Fitur | Keterangan |
+| Feature | Description |
 |---|---|
-| **Operasi dasar** | Tambah (`+`), kurang (`-`), kali (`*`), dan bagi (`/`) |
-| **Angka desimal** | Semua angka diproses sebagai `f64`, jadi `3.5 * 2` juga bisa |
-| **Input validation** | Angka atau operator yang tidak valid akan diminta ulang, program tidak crash |
-| **Pembagian dengan nol** | Menampilkan peringatan dan mengembalikan `inf` |
-| **Hitung berulang** | Setelah satu perhitungan, kamu bisa lanjut dengan menjawab `y` |
+| **Basic operations** | Addition (`+`), subtraction (`-`), multiplication (`*`), and division (`/`) |
+| **Decimal numbers** | All numbers are processed as `f64`, so `3.5 * 2` works too |
+| **Input validation** | Invalid numbers or operators are asked for again, the program does not crash |
+| **Division by zero** | Prints a warning and returns `inf` |
+| **Repeat calculations** | After each calculation, answer `y` to keep going |
 
 ---
 
-## Cara Menjalankan
+## How to Run
 
-### Prasyarat
+### Prerequisites
 
-Pastikan Rust sudah terinstall (proyek ini memakai Rust edition 2024, jadi butuh Rust 1.85 atau lebih baru):
+Make sure Rust is installed (this project uses Rust edition 2024, so you need Rust 1.85 or newer):
 
 ```bash
 cargo --version
 ```
 
-Jika belum ada, install dari [https://rustup.rs](https://rustup.rs).
+If it is not installed, get it from [https://rustup.rs](https://rustup.rs).
 
-### Jalankan Aplikasi
+### Run the App
 
 ```bash
 cd cli_calculator
 cargo run
 ```
 
-### Format Kode
+### Format the Code
 
 ```bash
 cargo fmt
 ```
 
-### Cek Error Tanpa Kompilasi Penuh
+### Check for Errors Without a Full Build
 
 ```bash
 cargo check
@@ -50,9 +50,9 @@ cargo check
 
 ---
 
-## Cara Menggunakan
+## How to Use
 
-Setelah `cargo run`, program akan meminta dua angka dan satu operator:
+After `cargo run`, the program asks for two numbers and one operator:
 
 ```
 === Simple CLI Calculator ===
@@ -65,15 +65,15 @@ Do you want to perform another calculation? (y/n): n
 Thank you for using the calculator. Goodbye!
 ```
 
-**Contoh alur penggunaan:**
+**Example flow:**
 
-1. Masukkan angka pertama, lalu tekan Enter
-2. Masukkan operator (`+`, `-`, `*`, atau `/`), lalu tekan Enter
-3. Masukkan angka kedua, lalu tekan Enter
-4. Hasil perhitungan langsung ditampilkan
-5. Ketik `y` untuk menghitung lagi, atau tombol lain untuk keluar
+1. Enter the first number, then press Enter
+2. Enter an operator (`+`, `-`, `*`, or `/`), then press Enter
+3. Enter the second number, then press Enter
+4. The result is shown right away
+5. Type `y` to calculate again, or any other key to exit
 
-**Contoh input tidak valid:**
+**Example of invalid input:**
 
 ```
 Enter the first number: abc
@@ -84,64 +84,64 @@ Invalid operator. Please enter one of +, -, *, /
 
 ---
 
-## Struktur Project
+## Project Structure
 
 ```
 cli_calculator/
-├── Cargo.toml       # Konfigurasi project dan dependencies
-├── README.md        # Dokumentasi ini
+├── Cargo.toml       # Project configuration and dependencies
+├── README.md        # This documentation
 └── src/
-    └── main.rs      # Seluruh kode program
+    └── main.rs      # The whole program
 ```
 
-Tidak ada dependency eksternal — proyek ini hanya memakai Rust standard library.
+There are no external dependencies — this project only uses the Rust standard library.
 
 ---
 
-## Konsep Rust yang Dipelajari
+## Rust Concepts Covered
 
-### 1. Fungsi dengan Tipe Parameter dan Return
+### 1. Functions with Parameter and Return Types
 ```rust
 fn calculate(a: f64, b: f64, operator: char) -> f64 { ... }
 ```
-Rust mewajibkan tipe parameter dan tipe return ditulis eksplisit. `f64` adalah
-bilangan desimal 64-bit, sedangkan `char` adalah satu karakter.
+Rust requires parameter types and return types to be written explicitly. `f64` is a
+64-bit floating-point number, while `char` is a single character.
 
 ---
 
-### 2. `loop`, `break`, dan `return`
+### 2. `loop`, `break`, and `return`
 ```rust
 loop {
-    // ... minta input ...
+    // ... ask for input ...
     if continue_input.trim().to_lowercase() != "y" {
         break;
     }
 }
 ```
-`loop` berjalan tanpa henti sampai ada `break` (keluar dari loop) atau `return`
-(keluar dari fungsi). Di proyek ini `loop` dipakai dua kali: untuk mengulang
-kalkulator, dan untuk terus meminta input sampai valid.
+`loop` runs forever until a `break` (exit the loop) or a `return` (exit the function).
+This project uses `loop` twice: to repeat the calculator, and to keep asking for
+input until it is valid.
 
 ---
 
-### 3. Membaca Input dari Terminal (`stdin`)
+### 3. Reading Terminal Input (`stdin`)
 ```rust
 let mut input = String::new();
 io::stdin().read_line(&mut input).unwrap();
 ```
-`read_line` menulis input ke `String` yang kita pinjamkan secara mutable
-(`&mut input`). Hasilnya selalu menyertakan karakter newline, jadi kita
-memanggil `.trim()` sebelum memprosesnya.
+`read_line` writes the input into a `String` that we lend out mutably (`&mut input`).
+The result always includes the trailing newline, so we call `.trim()` before
+processing it.
 
 ---
 
-### 4. Menampilkan Prompt dengan `flush`
+### 4. Showing a Prompt with `flush`
 ```rust
 print!("{}", prompt);
 let _ = io::Write::flush(&mut io::stdout());
 ```
-`print!` (tanpa `ln`) tidak mencetak newline, dan output-nya bisa tertahan di
-buffer. `flush` memaksa prompt tampil sebelum program menunggu input.
+`print!` (without `ln`) does not print a newline, and its output may stay in a
+buffer. `flush` forces the prompt to appear before the program waits for input.
 
 ---
 
@@ -149,20 +149,20 @@ buffer. `flush` memaksa prompt tampil sebelum program menunggu input.
 ```rust
 fn read_number(prompt: &str) -> f64 { ... }
 ```
-`String` adalah teks yang dimiliki dan bisa diubah. `&str` adalah pinjaman ke
-teks yang sudah ada. Untuk parameter fungsi yang hanya membaca teks, gunakan `&str`.
+`String` is owned, modifiable text. `&str` is a borrowed reference to text that
+already exists. For function parameters that only read text, use `&str`.
 
 ---
 
-### 6. `Result` dan Penanganan Error
+### 6. `Result` and Error Handling
 ```rust
 match input.trim().parse::<f64>() {
     Ok(v)  => return v,
     Err(_) => println!("Invalid number. Please try again."),
 }
 ```
-`parse()` mengembalikan `Result`. Dengan `match`, kita menangani sukses (`Ok`)
-dan gagal (`Err`) secara eksplisit, tidak ada exception tersembunyi.
+`parse()` returns a `Result`. With `match`, we handle success (`Ok`) and failure
+(`Err`) explicitly — there are no hidden exceptions.
 
 ---
 
@@ -176,12 +176,12 @@ match operator {
     _   => 0.00,
 }
 ```
-`match` memilih cabang berdasarkan nilai. `_` adalah wildcard untuk nilai lain,
-dan compiler memastikan semua kemungkinan tertangani.
+`match` picks a branch based on the value. `_` is the wildcard for any other value,
+and the compiler makes sure every possibility is handled.
 
 ---
 
-### 8. `if` sebagai Ekspresi dan `f64::INFINITY`
+### 8. `if` as an Expression and `f64::INFINITY`
 ```rust
 if b == 0.0 {
     println!("Warning: Division by zero detected. Returning infinity.");
@@ -190,18 +190,18 @@ if b == 0.0 {
     a / b
 }
 ```
-Di Rust, `if/else` menghasilkan nilai, sehingga bisa jadi hasil akhir sebuah
-cabang `match`. Bilangan desimal (`f64`) punya nilai khusus `INFINITY`, jadi
-pembagian dengan nol tidak membuat program crash.
+In Rust, `if/else` produces a value, so it can be the final result of a `match`
+branch. Floating-point numbers (`f64`) have a special `INFINITY` value, so dividing
+by zero does not crash the program.
 
 ---
 
-## Langkah Selanjutnya
+## Next Steps
 
-Setelah memahami proyek ini, kamu bisa coba:
+After understanding this project, you can try:
 
-1. **Unit test** — tambah `#[cfg(test)]` untuk menguji fungsi `calculate`
-2. **Error handling yang lebih baik** — ganti `unwrap()` dengan `?` atau `match`, dan buat `calculate` mengembalikan `Result<f64, String>` untuk kasus bagi nol
-3. **Operator baru** — tambah modulo (`%`) dan pangkat
-4. **Riwayat perhitungan** — simpan hasil sebelumnya ke `Vec<String>` dan tampilkan di akhir
-5. **Parser ekspresi** — izinkan input seperti `2 + 3 * 4` dalam satu baris
+1. **Unit tests** — add `#[cfg(test)]` to test the `calculate` function
+2. **Better error handling** — replace `unwrap()` with `?` or `match`, and make `calculate` return `Result<f64, String>` for the division-by-zero case
+3. **New operators** — add modulo (`%`) and power
+4. **Calculation history** — store previous results in a `Vec<String>` and show them at the end
+5. **Expression parser** — allow input like `2 + 3 * 4` on a single line
