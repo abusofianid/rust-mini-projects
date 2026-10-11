@@ -1,31 +1,31 @@
 use core::f64;
 use std::io;
 
-// Definisi fungsi main, titik masuk program
+// Definition of the main function, the entry point of the program
 fn main() {
     println!("=== Simple CLI Calculator ===");
     loop {
-        // Cetak header kalkulator
+        // Print the calculator header
         println!("=== Simple CLI Calculator ===");
-        // Input angka pertama dengan memanggil fungsi read_number
+        // Read the first number by calling the read_number function
         let number1 = read_number("Enter the first number: ");
-        // Input operator dengan memanggil fungsi read_operator
+        // Read the operator by calling the read_operator function
         let operator = read_operator("Enter an operator (+, -, *, /): ");
-        // Input angka kedua dengan memanggil fungsi read_number
+        // Read the second number by calling the read_number function
         let number2 = read_number("Enter the second number: ");
-        // Hitung hasil dengan memanggil fungsi calculate
+        // Compute the result by calling the calculate function
         let result = calculate(number1, number2, operator);
-        // Tampilkan hasil perhitungan
+        // Show the calculation result
         println!("Result: {} {} {} = {}", number1, operator, number2, result);
 
-        // Inisialisasi string kosong untuk menyimpan input pengguna tentang apakah ingin melanjutkan
+        // Initialize an empty string to store the user's answer about continuing
         let mut continue_input = String::new();
         print!("Do you want to perform another calculation? (y/n): ");
-        // Flush stdout agar prompt ditampilkan segera sebelum program menunggu input
+        // Flush stdout so the prompt is shown right away before the program waits for input
         let _ = io::Write::flush(&mut io::stdout());
-        // Baca baris input dari stdin dan simpan ke continue_input, gunakan unwrap untuk menangani error
+        // Read a line from stdin into continue_input, using unwrap to handle errors
         io::stdin().read_line(&mut continue_input).unwrap();
-        // Jika input setelah dipotong spasi dan diubah ke lowercase bukan "y", keluar dari loop
+        // If the trimmed, lowercased input is not "y", exit the loop
         if continue_input.trim().to_lowercase() != "y" {
             break;
         }
@@ -33,23 +33,23 @@ fn main() {
     println!("Thank you for using the calculator. Goodbye!");
 }
 
-// Definisi fungsi read_number yang menerima prompt sebagai string slice dan mengembalikan f64
+// Definition of read_number, which takes a prompt as a string slice and returns an f64
 fn read_number(prompt: &str) -> f64 {
-    // Mulai loop tak terbatas untuk terus meminta input hingga valid
+    // Start an infinite loop to keep asking until the input is valid
     loop {
-        // Inisialisasi string kosong untuk menyimpan input pengguna
+        // Initialize an empty string to store the user's input
         let mut input = String::new();
-        // Cetak prompt tanpa newline agar input langsung mengikuti prompt
+        // Print the prompt without a newline so the input follows it directly
         print!("{}", prompt);
-        // Flush stdout agar prompt ditampilkan segera sebelum membaca input
+        // Flush stdout so the prompt is shown right away before reading input
         let _ = io::Write::flush(&mut io::stdout());
-        // Baca baris input dari stdin dan simpan ke input, gunakan unwrap untuk menangani error
+        // Read a line from stdin into input, using unwrap to handle errors
         io::stdin().read_line(&mut input).unwrap();
-        // Cocokkan hasil parsing input yang dipotong spasi menjadi f64
+        // Match on the result of parsing the trimmed input as an f64
         match input.trim().parse::<f64>() {
-            // Jika parsing berhasil, kembalikan nilai f64
+            // If parsing succeeds, return the f64 value
             Ok(v) => return v,
-            // Jika parsing gagal, cetak pesan error dan lanjutkan loop
+            // If parsing fails, print an error message and continue the loop
             Err(_) => {
                 println!("Invalid number. Please try again.");
             }
@@ -57,27 +57,27 @@ fn read_number(prompt: &str) -> f64 {
     }
 }
 
-// Definisi fungsi read_operator yang menerima prompt sebagai string slice dan mengembalikan char
+// Definition of read_operator, which takes a prompt as a string slice and returns a char
 fn read_operator(prompt: &str) -> char {
-    // Mulai loop tak terbatas untuk terus meminta input hingga operator valid
+    // Start an infinite loop to keep asking until the operator is valid
     loop {
-        // Inisialisasi string kosong untuk menyimpan input pengguna
+        // Initialize an empty string to store the user's input
         let mut input = String::new();
-        // Cetak prompt tanpa newline agar input langsung mengikuti
+        // Print the prompt without a newline so the input follows it directly
         print!("{}", prompt);
-        // Flush stdout agar prompt ditampilkan segera sebelum membaca input
+        // Flush stdout so the prompt is shown right away before reading input
         let _ = io::Write::flush(&mut io::stdout());
-        // Baca baris input dari stdin dan simpan ke input, gunakan unwrap untuk menangani error
+        // Read a line from stdin into input, using unwrap to handle errors
         io::stdin().read_line(&mut input).unwrap();
-        // Potong spasi dari input dan simpan sebagai operator
+        // Trim the input and store it as the operator
         let operator = input.trim();
-        // Periksa apakah panjang operator adalah 1 karakter
+        // Check that the operator is exactly 1 byte long
         if operator.len() == 1 {
-            // Ambil karakter pertama dari operator
+            // Take the first character of the operator
             let c = operator.chars().next().unwrap();
-            // Periksa apakah karakter tersebut adalah salah satu dari +, -, *, /
+            // Check that the character is one of +, -, *, /
             if "+-*/".contains(c) {
-                // Jika ya, kembalikan karakter tersebut
+                // If so, return that character
                 return c;
             }
         }
@@ -85,9 +85,9 @@ fn read_operator(prompt: &str) -> char {
     }
 }
 
-// Definisi fungsi calculate yang menerima dua f64 dan satu char operator, mengembalikan f64 hasil perhitungan
+// Definition of calculate, which takes two f64 values and an operator char, and returns the f64 result
 fn calculate(a: f64, b: f64, operator: char) -> f64 {
-    // Gunakan match untuk menentukan operasi berdasarkan operator
+    // Use match to choose the operation based on the operator
     match operator {
         '+' => a + b,
         '-' => a - b,
@@ -100,7 +100,7 @@ fn calculate(a: f64, b: f64, operator: char) -> f64 {
                 a / b
             }
         }
-        // Untuk operator lain yang tidak dikenal, kembalikan 0.0 sebagai default
+        // For any other unknown operator, return 0.0 as a default
         _ => 0.00,
     }
 }
