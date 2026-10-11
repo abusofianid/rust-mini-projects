@@ -244,4 +244,4 @@ After understanding this project, you can try:
 
 ## License
 
-MIT — free to use for learning.
+GPL v3 — see the [LICENSE](../LICENSE) file for details.

@@ -2,6 +2,7 @@
 
 ![Rust](https://img.shields.io/badge/Rust-stable-orange?style=for-the-badge&logo=rust&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
 
 **A repository of hands-on Rust mini-projects to build practical experience with a fast and safe language.**
 
